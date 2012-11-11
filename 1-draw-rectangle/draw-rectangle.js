@@ -6,7 +6,6 @@
 (function() {
 
     var root = this;
-    var SVG_NS = "http://www.w3.org/2000/svg";
 
     // TODO: Save previoius value of Planman if we need to
 
@@ -21,10 +20,16 @@
     
     // # Support functions
     
-    // This creates a new rectangle and returns it. It doesn't add this to 
-    // a parent.
+    // Creates an svg node. The `svgType` should be things like `svg`, `rect`, etc.
+    // See [SVG Shapes](http://www.w3.org/TR/SVG11/shapes.html) for more info.
+    function newSvgNode(svgType) {
+        var result = document.createElementNS("http://www.w3.org/2000/svg", svgType);
+        return result;
+    }
+    
+    // This creates a new rectangle and returns it.
     function newRectangle(x, y, width, height) {
-        var result = document.createElementNS(SVG_NS, "rect");
+        var result = newSvgNode("rect");
         result.x.baseVal.value = x;
         result.y.baseVal.value = y;
         result.width.baseVal.value = width;
@@ -37,20 +42,16 @@
     // This function should be called once the page is finished loading. It sets up the svg
     // element in the viewer and then draws the rectangles.
     Planman.init = function() {
-        var svgViewer = document.createElementNS(SVG_NS, "svg");
-
         var viewer = document.getElementById("viewer");
+        var svgViewer = newSvgNode("svg");
         viewer.appendChild(svgViewer);
 
-        // Create a rectangle
         var rect1 = newRectangle(0, 0, 50, 30);
         rect1.style.fill = "blue";
 
-        // Create second rectangle
         var rect2 = newRectangle(40, 40, 50, 30)
         rect2.style.fill = "green";
 
-        // Append rectangles
         [rect1, rect2].forEach(function(e) {
             svgViewer.appendChild(e);
         })
