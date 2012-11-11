@@ -2,14 +2,35 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Draw Rectangle</title>
+        <title>Draw Rectangle + Export as JSON</title>
         <link rel="stylesheet" href="style.css">
+        <script src="underscore.js"></script>
         <script src="draw-rectangle.js"></script>
     </head>
     <body>
-        <h1>Drawing a Rectangle in SVG</h1>
+        <h1>Drawing a Rectangle in SVG + Export JSON</h1>
         <div id="viewer"></div>
+        <p>
+            <button id="dumpTasksButton">Dump Tasks</button>
+        </p>
+
+        <div id="dumpContainer">
+            <code id="dump"></code>
+        </div>
         <script>
+            // TODO: We should refactor this using Backbone
+            // We need to add this to the view code
+            function dumpTasks() {
+                var tasks = Planman.exportTasks();
+                var dump = document.getElementById("dump");
+                dump.innerHTML = tasks;
+            }
+
+            var dumpTasksButton = document.getElementById("dumpTasksButton");
+            dumpTasksButton.onclick = function(event) {
+               dumpTasks();
+            };
+
             Planman.init();
         </script>
     </body>
