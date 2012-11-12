@@ -14,6 +14,8 @@
     }
 
     Planman.rectangles = [];
+    Planman.dragReference = {};
+    Planman.startPoint = {};
 
         // # Support functions
 
@@ -43,6 +45,30 @@
         return result;
     }
 
+    // # Event handlers
+
+    // Toggle drag mode for rectangles
+    function handleClick(event) {
+        console.dir(event);
+        event.target.isDrag = !event.target.isDrag;
+        if (event.target.isDrag) {
+            Planman.dragReference = {x: event.x, y: event.y};
+            Planman.startPoint = {x: event.target.x.baseVal.value, y: event.target.y.baseVal.value};
+        }
+    }
+
+    // Move handler for rectangles
+    function handleMove(event) {
+        if (!event.target.isDrag) {
+            return;
+        }
+
+        var delta = {x: event.x - Planman.dragReference.x, y: event.y - Planman.dragReference.y};
+        event.target.x.baseVal.value = Planman.startPoint.x + delta.x;
+        event.target.y.baseVal.value = Planman.startPoint.y + delta.y;
+    }
+
+
 
     // # Main functions
 
@@ -63,6 +89,8 @@
         Planman.rectangles = [rect1, rect2];
 
         Planman.rectangles.forEach(function(e) {
+            e.onclick = handleClick;
+            e.onmousemove = handleMove;
             svgViewer.appendChild(e);
         })
     }
@@ -124,6 +152,18 @@
         var result = JSON.stringify({tasks: resultArray});
         return result;
     }
+
+
+    // Simulates a drag of a rectangle
+    Planman.simulateDrag = function() {
+        var rect = Planman.rectangles[0];
+        setInterval(function() {
+            rect.x.baseVal.value += 10;
+        }, 500);
+
+        return;
+    }
+
 
 
 }).call(this);
