@@ -13,11 +13,16 @@
         Planman = root.Planman = {};
     }
 
+    // This stores all the rectangles that we're managing (should be a Backbone collection)
     Planman.rectangles = [];
+
+    // This is where a drag starts.
     Planman.dragReference = {};
+
+    // This is the start point of an element when it starts being dragged.
     Planman.startPoint = {};
 
-        // # Support functions
+    // # Support functions
 
     // Creates an svg node. The `svgType` should be things like `svg`, `rect`, etc.
     // See [SVG Shapes](http://www.w3.org/TR/SVG11/shapes.html) for more info.
@@ -47,9 +52,9 @@
 
     // # Event handlers
 
-    // Toggle drag mode for rectangles
+    // Toggle drag mode for rectangles. At some point we need to handle a more natural
+    // drag mechanism.
     function handleClick(event) {
-        console.dir(event);
         event.target.isDrag = !event.target.isDrag;
         if (event.target.isDrag) {
             Planman.dragReference = {x: event.x, y: event.y};
@@ -145,6 +150,7 @@
         return result;
     }
 
+    // This converts all rectangles to JSON data that we can send back to the server.
     Planman.exportTasks = function() {
         var resultArray = _.map(Planman.rectangles, function(e) {
            return Planman.rectAsJSON(e);
@@ -152,18 +158,6 @@
         var result = JSON.stringify({tasks: resultArray});
         return result;
     }
-
-
-    // Simulates a drag of a rectangle
-    Planman.simulateDrag = function() {
-        var rect = Planman.rectangles[0];
-        setInterval(function() {
-            rect.x.baseVal.value += 10;
-        }, 500);
-
-        return;
-    }
-
 
 
 }).call(this);
