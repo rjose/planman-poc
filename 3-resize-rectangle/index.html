@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Resize Rectangle</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
+        <script src="../common/underscore.js"></script>
+        <script src="resize-rectangle.js"></script>
+    </head>
+    <body>
+        <h1>Resize Rectangle</h1>
+        <div id="viewer"></div>
+        <p>
+            <button id="dumpTasksButton">Dump Tasks</button>
+        </p>
+        <p>
+            <button id="resizeTaskButton">Resize Task</button>
+        </p>
+
+        <div id="dumpContainer">
+            <code id="dump"></code>
+        </div>
+        <script>
+            // TODO: We should refactor this using Backbone
+            // We need to add this to the view code
+            function dumpTasks() {
+                var tasks = Planman.exportTasks();
+                var dump = document.getElementById("dump");
+                dump.innerHTML = tasks;
+            }
+
+            function resizeTask(event) {
+                var rect = Planman.rectangles[0];
+                Planman.resizeRectangle(rect, rect.width.baseVal.value + 100);
+                console.log("Resize task!");
+            }
+
+            var dumpTasksButton = document.getElementById("dumpTasksButton");
+            dumpTasksButton.onclick = function(event) {
+               dumpTasks();
+            };
+
+            var resizeTaskButton = document.getElementById("resizeTaskButton");
+            resizeTaskButton.onclick = resizeTask;
+
+            Planman.init();
+        </script>
+
+    </body>
+</html>
